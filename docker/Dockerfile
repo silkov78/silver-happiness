@@ -1,13 +1,11 @@
-FROM php:8.0.2-fpm
+FROM php:8.3-fpm
 
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    zip \
-    vim \
-    unzip
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# COPY ./project/php.ini /usr/local/etc/php/php.ini
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git curl
 
 RUN docker-php-ext-install pdo pdo_mysql
 
