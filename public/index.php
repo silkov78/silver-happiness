@@ -20,7 +20,7 @@ $router = new Router();
 
 $router
     ->get('/', [HomeController::class, 'index'])
-    ->get('/upload', [UploadController::class, 'form'])
+    ->get('/upload', [UploadController::class, 'index'])
     ->post('/upload', [UploadController::class, 'upload']);
 
 (new App(
