@@ -26,8 +26,13 @@ class UploadController
 
         $parsedTransactions = (new FileUploadHandler($attachedFile['tmp_name']))->getTransactions();
 
-//        foreach ($parsedTransactions as $transaction) {
-//            Transaction->create()
-//        }
+        foreach ($parsedTransactions as $transaction) {
+            (new Transaction)->create(
+                $transaction['date'],
+                $transaction['checkNumber'],
+                $transaction['description'],
+                $transaction['amount'],
+            );
+        }
     }
 }

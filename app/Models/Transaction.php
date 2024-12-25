@@ -2,22 +2,24 @@
 
 declare(strict_types = 1);
 
+namespace App\Models;
+
 use App\Model;
 
 class Transaction extends Model
 {
     public function create(
-        \DateTime $dateTime,
+        string $dateTime,
         int $checkNumber,
         string $description,
         float $amount,
-    ) 
+    ): void
     {
         $stmt = $this->db->prepare(
-            'INSERT INTO tranactions (date, check_number, description, amount)
+            'INSERT INTO transactions (date, check_number, description, amount)
             VALUES (?, ?, ?, ?)'
         );
 
-        $stmt->execute($dateTime, $checkNumber, $description, $amount);
+        $stmt->execute([$dateTime, $checkNumber, $description, $amount]);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tools;
 
 use App\Exceptions\FileNotFoundException;
+use DateTime;
 
 class FileUploadHandler
 {
@@ -37,10 +38,14 @@ class FileUploadHandler
 
         [$date, $checkNumber, $description, $amount] = $transactionRow;
 
+        $date = DateTime::createFromFormat('d/m/Y', $date);
+        $mysqlDateTime = $date->format('Y-m-d');
+
+        $checkNumber = (int) $checkNumber;
         $amount = (float) str_replace(['$', ','], '', $amount);
 
         return [
-            'date' => $date,
+            'date' => $mysqlDateTime,
             'checkNumber' => $checkNumber,
             'description' => $description,
             'amount' => $amount
