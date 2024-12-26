@@ -1,3 +1,17 @@
+<?php
+
+function formatDate(
+    string $date,
+    string $inputFormat = 'Y-m-d',
+    string $outputFormat = 'M j, Y'
+): string
+{
+    $date = \DateTime::createFromFormat($inputFormat, $date);
+    return $date->format($outputFormat);
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,10 +48,10 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (! empty($transactionsList)): ?> 
+                <?php if (! empty($transactionsList)): ?>
                     <?php foreach ($transactionsList as $transaction): ?>
                         <tr>
-                            <td><?= $transaction['date']?></td>
+                            <td><?= formatDate($transaction['date'])?></td>
                             <td><?= $transaction['check_number']?></td>
                             <td><?= $transaction['description']?></td>
                             <td><?= $transaction['amount']?></td>
