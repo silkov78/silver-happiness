@@ -7,7 +7,7 @@ namespace App\Tools;
 use App\Exceptions\FileNotFoundException;
 use DateTime;
 
-class FileUploadHandler
+class UploadedFileHandler
 {
     public function __construct(private string $csvFilePath)
     {
