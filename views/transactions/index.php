@@ -1,11 +1,3 @@
-<?php
-
-echo '<pre>';
-print_r($transactionsList);
-echo '</pre>';
-
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -42,7 +34,14 @@ echo '</pre>';
                 </tr>
             </thead>
             <tbody>
-                <!-- TODO -->
+                <?php foreach ($transactionsList as $transaction): ?>
+                    <tr>
+                        <td><?= $transaction['date']?></td>
+                        <td><?= $transaction['check_number']?></td>
+                        <td><?= $transaction['description']?></td>
+                        <td><?= $transaction['amount']?></td>
+                    </tr>
+                <?php endforeach ?>
             </tbody>
             <tfoot>
                 <tr>
