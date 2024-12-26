@@ -10,14 +10,20 @@ use App\Models\Transaction;
 
 class TransactionsController
 {
-    public function getTransactions(): View
-    {
-        return View::make('transactions/index');
-    }
-
     public function getForm(): View
     {
         return View::make('transactions/form');
+    }
+
+    public function getTransactions()
+    {
+        $transactions = (new Transaction())->fetchAll();
+
+        echo '<pre>';
+        print_r($transactions);
+        echo '</pre>';
+
+        // return View::make('transactions/index');
     }
 
    public function uploadTransactions(): View

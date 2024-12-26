@@ -8,6 +8,16 @@ use App\Model;
 
 class Transaction extends Model
 {
+    public function fetchAll(): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT * FROM transactions'
+        );
+        $stmt->execute();
+
+        return $stmt->fetchAll() ?? [];
+    }
+
     public function create(string $dateTime, int $checkNumber, string $description, float $amount): void
     {
         $stmt = $this->db->prepare(

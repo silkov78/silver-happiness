@@ -1,3 +1,11 @@
+<?php
+
+echo '<pre>';
+print_r(extract($params));
+echo '</pre>';
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
