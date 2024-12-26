@@ -12,7 +12,7 @@ class UploadedFileHandler
     public function __construct(private string $csvFilePath)
     {
         if (! file_exists($this->csvFilePath)) {
-            throw new FileNotFoundException('Uploaded file' . $this->csvFilePath . ' not found');
+            throw new FileNotFoundException('Uploaded file "' . $this->csvFilePath . '" not found');
         }
     }
 
