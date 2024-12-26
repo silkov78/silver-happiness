@@ -17,13 +17,12 @@ class TransactionsController
 
     public function getTransactions()
     {
-        $transactions = (new Transaction())->fetchAll();
+        $transactionsList = (new Transaction())->fetchAll();
 
-        echo '<pre>';
-        print_r($transactions);
-        echo '</pre>';
-
-        // return View::make('transactions/index');
+        return View::make(
+            'transactions/index',
+            ['transactionsList' => $transactionsList]
+        );
     }
 
    public function uploadTransactions(): View

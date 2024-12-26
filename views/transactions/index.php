@@ -1,7 +1,7 @@
 <?php
 
 echo '<pre>';
-print_r(extract($params));
+print_r($transactionsList);
 echo '</pre>';
 
 ?>
