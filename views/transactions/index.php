@@ -10,6 +10,15 @@ function formatDate(
     return $date->format($outputFormat);
 }
 
+function formatAmount(string|float $amount): string
+{
+    if ((float) $amount >= 0) {
+        return '<span style="color:green;">' . '$' . $amount . '</span>';
+    }
+
+    return '<span style="color:red;">' . str_replace('-', '-$', $amount) . '</span>';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +63,7 @@ function formatDate(
                             <td><?= formatDate($transaction['date'])?></td>
                             <td><?= $transaction['check_number']?></td>
                             <td><?= $transaction['description']?></td>
-                            <td><?= $transaction['amount']?></td>
+                            <td><?= formatAmount($transaction['amount'])?></td>
                         </tr>
                     <?php endforeach ?>
                 <?php endif ?>
