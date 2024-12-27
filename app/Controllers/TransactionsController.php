@@ -28,16 +28,20 @@ class TransactionsController
 
    public function uploadTransactions(): View
    {
-       $attachedFile = $_FILES['transactions'];
+       $attachedFile = $_FILES['files'];
 
-       if ($attachedFile['type'] !== 'text/csv') {
-           throw new InvalidFileException('CSV-file is required.');
-       }
+       echo '<pre>';
+       var_dump($attachedFile);
+       echo '</pre>';
 
-       $parsedTransactions = (new UploadedFileHandler($attachedFile['tmp_name']))->getTransactions();
-
-       (new Transaction())->createMany($parsedTransactions);
-
-       return View::make('transactions/result');
+       // if ($attachedFile['type'] !== 'text/csv') {
+       //     throw new InvalidFileException('CSV-file is required.');
+       // }
+       //
+       // $parsedTransactions = (new UploadedFileHandler($attachedFile['tmp_name']))->getTransactions();
+       //
+       // (new Transaction())->createMany($parsedTransactions);
+       //
+       // return View::make('transactions/result');
    }
 }
