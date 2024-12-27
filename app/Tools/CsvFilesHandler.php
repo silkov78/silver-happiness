@@ -9,22 +9,16 @@ use DateTime;
 
 class CsvFilesHandler
 {
-    public function __construct(private array $filesArray)
+    public function __construct(array $attachedFilesInfo)
     {
-        // $this->validateFiles();
-
-        // if (! file_exists($this->csvFilePath)) {
-        //     throw new FileNotFoundException('Uploaded file "' . $this->csvFilePath . '" not found');
-        // }
+        $this->attachedFilesInfo = $this->transformFilesArray($attachedFilesInfo);
     }
-
-
 
     public function getTransactions(): array
     {
         $transactions = [];
 
-        foreach ($this->filesArray["tmp_name"] as $file) {
+        foreach ($this->attachedFiles["tmp_name"] as $file) {
             $file = fopen($file, 'r');
 
             fgetcsv($file);
@@ -34,6 +28,17 @@ class CsvFilesHandler
         }
 
         return $transactions;
+    }
+
+    private function transformFilesArray(array $arr): array
+    {
+        $out = array();
+        foreach ($arr as $key => $subarr) {
+            foreach ($subarr as $subkey => $subvalue) {
+                $out[$subkey][$key] = $subvalue;
+            }
+        }
+        return $out;
     }
 
     private function parseTransaction(array $transactionRow): array {
@@ -53,4 +58,5 @@ class CsvFilesHandler
             'amount' => $amount
         ];
     }
+
 }
