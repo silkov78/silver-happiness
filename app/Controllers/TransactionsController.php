@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\View;
+use App\Exceptions\InvalidFileException;
 use App\Tools\UploadedFileHandler;
 use App\Models\Transaction;
 
