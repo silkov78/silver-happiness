@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use App\View;
 use App\Exceptions\InvalidFileException;
-use App\Tools\UploadedFileHandler;
+use App\Tools\CsvFilesHandler;
 use App\Models\Transaction;
 
 class TransactionsController
@@ -28,20 +28,11 @@ class TransactionsController
 
    public function uploadTransactions(): View
    {
-       $attachedFile = $_FILES['files'];
+       $csvHandler = new CsvFilesHandler($_FILES['csv_files']);
+       $parsedTransactions = $csvHandler->getTransactions();
 
-       echo '<pre>';
-       var_dump($attachedFile);
-       echo '</pre>';
+       (new Transaction())->createMany($parsedTransactions);
 
-       // if ($attachedFile['type'] !== 'text/csv') {
-       //     throw new InvalidFileException('CSV-file is required.');
-       // }
-       //
-       // $parsedTransactions = (new UploadedFileHandler($attachedFile['tmp_name']))->getTransactions();
-       //
-       // (new Transaction())->createMany($parsedTransactions);
-       //
-       // return View::make('transactions/result');
+       return View::make('transactions/result');
    }
 }

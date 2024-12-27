@@ -21,9 +21,6 @@ $router = new Router();
 
 $router
     ->get('/', [HomeController::class, 'index'])
-    ->get('/upload', [UploadController::class, 'index'])
-    ->post('/upload', [UploadController::class, 'upload'])
-
     ->get('/transactions', [TransactionsController::class, 'getTransactions'])
     ->get('/transactions/upload', [TransactionsController::class, 'getForm'])
     ->post('/transactions/upload', [TransactionsController::class, 'uploadTransactions']);
