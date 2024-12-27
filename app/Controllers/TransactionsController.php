@@ -29,7 +29,11 @@ class TransactionsController
    public function uploadTransactions(): View
    {
        $csvHandler = new CsvFilesHandler($_FILES['csv_files']);
-       $parsedTransactions = $csvHandler->getTransactions();
+       $parsedTransactions = $csvHandler->extractTransactions();
+
+       echo '<pre>';
+       print_r($parsedTransactions);
+       echo '</pre>';
 
        (new Transaction())->createMany($parsedTransactions);
 

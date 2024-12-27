@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tools;
 
 use App\Exceptions\FileNotFoundException;
+use App\Exceptions\InvalidFileException;
 use DateTime;
 
 class CsvFilesHandler
@@ -14,20 +15,53 @@ class CsvFilesHandler
         $this->attachedFilesInfo = $this->transformFilesArray($attachedFilesInfo);
     }
 
-    public function getTransactions(): array
+    public function extractTransactions(): array
     {
-        $transactions = [];
+        $allTransactions = [];
 
-        foreach ($this->attachedFiles["tmp_name"] as $file) {
-            $file = fopen($file, 'r');
-
-            fgetcsv($file);
-            while (($transaction = fgetcsv($file)) !== false) {
-                $transactions[] = $this->parseTransaction($transaction);
+        foreach ($this->attachedFilesInfo as $fileInfoArray) {
+            try {
+                $transactionsFromFile = $this->getTransactionsFromFile($fileInfoArray);
+                $allTransactions = array_merge($allTransactions, $transactionsFromFile);
+            } catch (FileNotFoundException | InvalidFileException $e) {
+                echo $e->getMessage();
+                continue;
             }
         }
 
+        return $allTransactions;
+    }
+
+    private function getTransactionsFromFile(array $fileInfo): array
+    {
+        $transactions = [];
+
+        $this->validateFile($fileInfo);
+
+        $file = fopen($fileInfo['tmp_name'], 'r');
+
+        fgetcsv($file);
+        while (($transaction = fgetcsv($file)) !== false) {
+            $transactions[] = $this->parseTransaction($transaction);
+        }
+
         return $transactions;
+    }
+
+    private function validateFile(array $fileInfo): void
+    {
+        if (! file_exists($fileInfo['tmp_name'])) {
+            throw new FileNotFoundException(
+                "File '{$fileInfo['name']}' is not found!" . '</br>'
+            );
+        }
+
+        if ($fileInfo['type'] !== 'text/csv') {
+            throw new InvalidFileException(
+                "File '{$fileInfo['name']}' should be CSV!" . '</br>'
+            );
+        }
+
     }
 
     private function transformFilesArray(array $arr): array
