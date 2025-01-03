@@ -9,49 +9,11 @@ use App\Router;
 
 class RouterTest extends TestCase
 {
-    public function test_it_registers_a_route(): void
+    private Router $router;
+
+    protected function setUp(): void
     {
-        // given that we have a router object
-        $router = new Router();
-
-        // when we call a register method
-        $router->register('get', '/users', ['UserController', 'index']);
-
-        // then we assert route was registered
-        $expected = [
-            'get' => [
-                '/users' => ['UserController', 'index'],
-            ],
-        ];
-
-        $this->assertEquals($expected, $router->routes());
-    }
-
-    public function test_it_registers_a_post_route(): void
-    {
-        $router = new Router();
-        $router->post('/users', ['UserController', 'store']);
-        $expected = [
-            'post' => [
-                '/users' => ['UserController', 'store'],
-            ],
-        ];
-
-        $this->assertEquals($expected, $router->routes());
-    }
-
-    public function test_it_registers_a_get_route(): void
-    {
-        $router = new Router();
-        $router->get('/users', ['UserController', 'index']);
-
-        $expected = [
-            'get' => [
-                '/users' => ['UserController', 'index'],
-            ],
-        ];
-
-        $this->assertEquals($expected, $router->routes());
+        $this->router = new Router();
     }
 
     public function test_there_are_no_routes_when_router_is_created(): void
@@ -60,4 +22,43 @@ class RouterTest extends TestCase
 
         $this->assertEmpty($router->routes());
     }
+    
+    public function test_it_registers_a_route(): void
+    {
+        $this->router->register('get', '/users', ['UserController', 'index']);
+
+        $expected = [
+            'get' => [
+                '/users' => ['UserController', 'index'],
+            ],
+        ];
+
+        $this->assertEquals($expected, $this->router->routes());
+    }
+
+    public function test_it_registers_a_post_route(): void
+    {
+        $this->router->post('/users', ['UserController', 'store']);
+        $expected = [
+            'post' => [
+                '/users' => ['UserController', 'store'],
+            ],
+        ];
+
+        $this->assertEquals($expected, $this->router->routes());
+    }
+
+    public function test_it_registers_a_get_route(): void
+    {
+        $this->router->get('/users', ['UserController', 'index']);
+
+        $expected = [
+            'get' => [
+                '/users' => ['UserController', 'index'],
+            ],
+        ];
+
+        $this->assertEquals($expected, $this->router->routes());
+    }
+
 }
