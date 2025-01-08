@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 class RouterTest extends TestCase
 {
     private Router $router;
-    
+
     public function setUp(): void
     {
         $this->router = new Router();
@@ -34,9 +34,29 @@ class RouterTest extends TestCase
     {
         // given object of Router $router
         // when routes doesn't registered
-        $this->router = new Router();
+        $router = new Router();
 
         // then $router->routes should return empty array
-        $this->assertEmpty($this->router->routes());
+        $this->assertEmpty($router->routes());
+    }
+
+    public function test_it_registers_a_route(): void
+    {
+        // given object of Router and Router->register() arguments
+        $requestMethod = 'get';
+        $route = '/invoices';
+        $action = ['SomeControllerClass', 'index'];
+
+        // when we call a register method
+        $this->router->register($requestMethod, $route, $action);
+
+        // then we assert route was registered
+        $expected = [
+            'get' => [
+                '/invoices' => ['SomeControllerClass', 'index'],
+            ],
+        ];
+
+        $this->assertSame($expected, $this->router->routes());
     }
 }
