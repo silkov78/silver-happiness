@@ -59,4 +59,40 @@ class RouterTest extends TestCase
 
         $this->assertSame($expected, $this->router->routes());
     }
+
+    public function test_it_registers_a_post_route(): void
+    {
+        // given object of Router class and Router->post() arguments
+        $route = '/users';
+        $action = ['User', 'store'];
+
+        // when we call a post method
+        $this->router->post($route, $action);
+
+        // then we assert a post route was registered:
+        //      router->routers() contains new value
+        $expected = [
+            'post' => [
+                '/users' => ['User', 'store'],
+            ], 
+        ];
+
+        $this->assertSame($expected, $this->router->routes());
+    }
+
+    public function test_it_registers_a_get_route(): void
+    {
+        $route = '/users';
+        $action = ['User', 'index'];
+
+        $this->router->get($route, $action);
+
+        $expected = [
+            'get' => [
+                '/users' => ['User', 'index'],
+            ], 
+        ];
+
+        $this->assertSame($expected, $this->router->routes());
+    }
 }
