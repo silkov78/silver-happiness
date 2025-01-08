@@ -38,4 +38,30 @@ class InvoiceServiceTest extends TestCase
         // then assert process-method was executed (returned true)
         $this->assertTrue($result);
     }
+
+    public function test_it_call_email_send_method_when_invoice_is_processed(): void
+    {
+        $salesTaxServiceMock = $this->createMock(SalesTaxService::class);
+        $gatewayServiceMock = $this->createMock(PaymentGatewayService::class);
+        $emailServiceMock = $this->createMock(EmailService::class);
+
+        $gatewayServiceMock->method('charge')->willReturn(true);
+        $emailServiceMock
+            ->expects($this->once())
+            ->method('send')
+            ->with(['name' => 'Piotr'], 'receipt');
+
+        // given InvoiceService 
+        $invoiceService = new InvoiceService(
+            $salesTaxServiceMock,
+            $gatewayServiceMock,
+            $emailServiceMock,
+        );
+
+        // when process-method was called
+        $result = $invoiceService->process(['name' => 'Piotr'], 178);
+
+        // then assert process-method was executed (returned true)
+        $this->assertTrue($result);
+    }
 }
