@@ -95,4 +95,31 @@ class RouterTest extends TestCase
 
         $this->assertSame($expected, $this->router->routes());
     }
+
+    /**
+     * @test
+     * @dataProvider \Tests\DataProviders\RouterDataProvider::routeNotFoundCases
+     */
+    public function test_it_throws_route_not_found_exception(
+        string $requestUri,
+        string $requestMethod
+    ): void
+    {
+        // given: 
+        // - a Router object $router with certain info, 
+        // - anonumus class as action Class
+        $users = new class() {
+            public function delete(): bool
+            {
+                return true;
+            }
+        };
+
+        $this->router->get('/users', [$users::class, 'index']);
+        
+        // when $router->resolve with another information
+        // then we assert RouteNotFoundException was thrownmation
+        $this->expectException(RouteNotFoundException::class);
+        $this->router->resolve($requestUri, $requestMethod);
+    }
 }

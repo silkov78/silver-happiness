@@ -8,9 +8,9 @@ class RouterDataProvider
     {
         return [
             ['/users', 'put'],
-            ['/invoices', 'post'],
-            ['/users', 'get'],
             ['/users', 'post'],
+            ['/invoices', 'get'],
+            ['/users', 'get'],
         ];
     }
 }
