@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Services;
 
 use App\Services\InvoiceService;
+use App\Services\SalesTaxService;
+use App\Services\PaymentGatewayService;
+use App\Services\EmailService;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,8 +19,18 @@ class InvoiceServiceTest extends TestCase
 {
     public function test_it_processes_invoice(): void
     {
+        $salesTaxServiceMock = $this->createMock(SalesTaxService::class);
+        $gatewayServiceMock = $this->createMock(PaymentGatewayService::class);
+        $emailServiceMock = $this->createMock(EmailService::class);
+
+        $gatewayServiceMock->method('charge')->willReturn(true);
+
         // given InvoiceService 
-        $invoiceService = new InvoiceService();
+        $invoiceService = new InvoiceService(
+            $salesTaxServiceMock,
+            $gatewayServiceMock,
+            $emailServiceMock,
+        );
 
         // when process-method was called
         $result = $invoiceService->process(['Piotr', 'chill guy'], 178);
