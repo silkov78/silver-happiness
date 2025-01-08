@@ -122,4 +122,19 @@ class RouterTest extends TestCase
         $this->expectException(RouteNotFoundException::class);
         $this->router->resolve($requestUri, $requestMethod);
     }
+
+    public function test_it_resolves_route_with_a_clousure(): void
+    {
+        // given we have a Router object with route as closure-action
+        // when
+        $this->router->post('/users', fn() => [1, 2, 3]);
+
+        // then
+        $expected = [1, 2, 3];
+
+        $this->assertSame(
+            $expected,
+            $this->router->resolve('/users', 'post'),
+        );
+    }
 }
