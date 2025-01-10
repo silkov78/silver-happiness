@@ -4,13 +4,11 @@ declare(strict_types = 1);
 
 namespace App;
 
-use App\Services\InvoiceService;
-use App\Services\SalesTaxService;
-use App\Services\PaymentGatewayService;
-use App\Services\EmailService;
-
 use App\Exceptions\RouteNotFoundException;
 use App\Services\PaymentGatewayServiceInterface;
+use App\Services\PaddlePayment;
+use App\Services\StripePayment;
+
 
 class App
 {
@@ -26,7 +24,7 @@ class App
 
         $this->container->set(
             PaymentGatewayServiceInterface::class,
-            PaymentGatewayService::class
+            PaddlePayment::class
         );
     }
 
