@@ -10,9 +10,14 @@ use App\Services\InvoiceService;
 
 class HomeController
 {
+    public function __construct(
+        private InvoiceService $invoiceService
+    ) {    
+    }
+
     public function index(): View
     {   
-        (new Container())->get(InvoiceService::class)->process(['nikita'], 25);
+        $this->invoiceService->process(['nikita'], 25);
         return View::make('index');
     }
 }
