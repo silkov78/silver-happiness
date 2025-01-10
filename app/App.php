@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace App;
 
 use App\Exceptions\RouteNotFoundException;
-use App\Services\PaymentGatewayServiceInterface;
+use App\Services\PaymentGatewayInterface;
 use App\Services\PaddlePayment;
 use App\Services\StripePayment;
 
@@ -23,7 +23,7 @@ class App
         static::$db = new DB($config->db ?? []);
 
         $this->container->set(
-            PaymentGatewayServiceInterface::class,
+            PaymentGatewayInterface::class,
             PaddlePayment::class
         );
     }
