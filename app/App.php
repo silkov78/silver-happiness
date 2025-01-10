@@ -26,7 +26,7 @@ class App
 
         $this->container->set(
             PaymentGatewayServiceInterface::class,
-            fn(Container $c) => $c->get(PaymentGatewayService::class)
+            PaymentGatewayService::class
         );
     }
 

@@ -18,7 +18,11 @@ class Container implements ContainerInterface
         if (isset($this->entries[$id])) {
             $entry = $this->entries[$id];
 
-            return $entry($this);
+            if (is_callable($this->entries[$id])) {
+                return $entry($this);
+            }
+
+            $id = $entry;
         }
 
         return $this->resolve($id);
@@ -29,7 +33,7 @@ class Container implements ContainerInterface
         return isset($this->entries[$id]);
     }
 
-    public function set(string $id, callable $concrete)
+    public function set(string $id, callable|string $concrete)
     {
         $this->entries[$id] = $concrete;
     }
