@@ -12,13 +12,13 @@ use PHPUnit\Framework\TestCase;
 class ContainerTest extends TestCase
 {   
     private Container $container;
-    private $controller;
+    private $payment;
 
     public function setUp(): void
     {
         $this->container = new Container();
 
-        $this->controller = new class() implements PaymentGatewayInterface
+        $this->payment = new class() implements PaymentGatewayInterface
         {
             public function charge(array $customer, float $amount, float $tax): bool
             {
@@ -30,8 +30,8 @@ class ContainerTest extends TestCase
     public function test_has_method_for_unset_entry(): void
     {   
         // given container with empty entries and cotroller class
-        // when container->has(controller) was called
-        $result = $this->container->has($this->controller::class);
+        // when container->has(payment) was called
+        $result = $this->container->has($this->payment::class);
 
         // then we assert has method returns false
         $this->assertFalse($result);
@@ -40,13 +40,13 @@ class ContainerTest extends TestCase
     public function test_set_method_with_callable(): void
     {   
         // given container with empty entries and cotroller class
-        // when container->set(controller)->charge was called
+        // when container->set(payment)->charge was called
         $this->container->set(
-            $this->controller::class,
-            fn(Container $c) => $this->controller::class
+            $this->payment::class,
+            fn(Container $c) => $this->payment::class
         );
 
-        $result = $this->container->has($this->controller::class);
+        $result = $this->container->has($this->payment::class);
 
         // then we assert result equal true
         $this->assertTrue($result);
@@ -55,13 +55,13 @@ class ContainerTest extends TestCase
     public function test_set_method_with_string(): void
     {   
         // given container with empty entries and cotroller class
-        // when container->set(controller)->charge was called
+        // when container->set(payment)->charge was called
         $this->container->set(
-            $this->controller::class,
-            $this->controller::class
+            $this->payment::class,
+            $this->payment::class
         );
 
-        $result = $this->container->has($this->controller::class);
+        $result = $this->container->has($this->payment::class);
 
         // then we assert result equal true
         $this->assertTrue($result);
@@ -70,8 +70,8 @@ class ContainerTest extends TestCase
     public function test_get_method_for_unset_entry(): void
     {   
         // given container with empty entries and cotroller class
-        // when container->get(controller)->charge was called
-        $result = $this->container->get($this->controller::class)->charge(['piotr'], 35, 2);
+        // when container->get(payment)->charge was called
+        $result = $this->container->get($this->payment::class)->charge(['piotr'], 35, 2);
 
         // then we assert method will be executed
         $this->assertSame(true, $result);
@@ -81,12 +81,12 @@ class ContainerTest extends TestCase
     {   
         // given container with entries and cotroller class
         $this->container->set(
-            $this->controller::class,
-            fn(Container $c) => $this->controller
+            $this->payment::class,
+            fn(Container $c) => $this->payment
         );
 
-        // when container->get(controller)->charge was called
-        $result = $this->container->get($this->controller::class)->charge(['piotr'], 35, 2);
+        // when container->get(payment)->charge was called
+        $result = $this->container->get($this->payment::class)->charge(['piotr'], 35, 2);
 
         // then we assert method will be executed
         $this->assertSame(true, $result);
@@ -97,11 +97,11 @@ class ContainerTest extends TestCase
         // given container with entries and cotroller class
         $this->container->set(
             PaymentGatewayInterface::class,
-            fn(Container $c) => $this->controller
+            fn(Container $c) => $this->payment
         );
 
-        // when container->get(controller)->charge was called
-        $result = $this->container->get($this->controller::class)->charge(['piotr'], 25, 2);
+        // when container->get(payment)->charge was called
+        $result = $this->container->get($this->payment::class)->charge(['piotr'], 25, 2);
 
         // then we assert method will be executed
         $this->assertSame(true, $result);
@@ -110,7 +110,7 @@ class ContainerTest extends TestCase
     public function test_get_method_for_interface_binding_which_unset(): void
     {   
         // given container with entries and cotroller class
-        $this->controller = new class() implements PaymentGatewayInterface
+        $this->payment = new class() implements PaymentGatewayInterface
         {
             public function charge(array $customer, float $amount, float $tax): bool
             {
@@ -118,8 +118,8 @@ class ContainerTest extends TestCase
             }
         };
 
-        // when container->get(controller)->charge was called
-        $result = $this->container->get($this->controller::class)->charge(['piotr'], 25, 2);
+        // when container->get(payment)->charge was called
+        $result = $this->container->get($this->payment::class)->charge(['piotr'], 25, 2);
 
         // then we assert method will be executed
         $this->assertSame(true, $result);
