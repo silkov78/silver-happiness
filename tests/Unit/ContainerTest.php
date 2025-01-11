@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Container; 
+use App\Services\PaymentGatewayInterface;
 use PHPUnit\Framework\MockObject\MockClass;
 use PHPUnit\Framework\TestCase;
 
@@ -17,10 +18,11 @@ class ContainerTest extends TestCase
     {
         $this->container = new Container();
 
-        $this->controller = new class() {
-            public function charge()
+        $this->controller = new class() implements PaymentGatewayInterface
+        {
+            public function charge(array $customer, float $amount, float $tax): bool
             {
-                return 'Bobruisk';
+                return true;
             }
         };
     }
@@ -69,10 +71,10 @@ class ContainerTest extends TestCase
     {   
         // given container with empty entries and cotroller class
         // when container->get(controller)->charge was called
-        $result = $this->container->get($this->controller::class)->charge();
+        $result = $this->container->get($this->controller::class)->charge(['piotr'], 35, 2);
 
         // then we assert method will be executed
-        $this->assertSame('Bobruisk', $result);
+        $this->assertSame(true, $result);
     }
 
     public function test_get_method_for_set_entry(): void
@@ -84,9 +86,42 @@ class ContainerTest extends TestCase
         );
 
         // when container->get(controller)->charge was called
-        $result = $this->container->get($this->controller::class)->charge();
+        $result = $this->container->get($this->controller::class)->charge(['piotr'], 35, 2);
 
         // then we assert method will be executed
-        $this->assertSame('Bobruisk', $result);
+        $this->assertSame(true, $result);
+    }
+
+    public function test_get_method_for_interface_binding_which_was_set(): void
+    {   
+        // given container with entries and cotroller class
+        $this->container->set(
+            PaymentGatewayInterface::class,
+            fn(Container $c) => $this->controller
+        );
+
+        // when container->get(controller)->charge was called
+        $result = $this->container->get($this->controller::class)->charge(['piotr'], 25, 2);
+
+        // then we assert method will be executed
+        $this->assertSame(true, $result);
+    }
+
+    public function test_get_method_for_interface_binding_which_unset(): void
+    {   
+        // given container with entries and cotroller class
+        $this->controller = new class() implements PaymentGatewayInterface
+        {
+            public function charge(array $customer, float $amount, float $tax): bool
+            {
+                return true;
+            }
+        };
+
+        // when container->get(controller)->charge was called
+        $result = $this->container->get($this->controller::class)->charge(['piotr'], 25, 2);
+
+        // then we assert method will be executed
+        $this->assertSame(true, $result);
     }
 }
