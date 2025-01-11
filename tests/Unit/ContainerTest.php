@@ -6,7 +6,7 @@ namespace Tests\Unit;
 
 use App\Container; 
 use App\Services\PaymentGatewayInterface;
-use PHPUnit\Framework\MockObject\MockClass;
+use App\Exceptions\Container\ContainerException;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -109,17 +109,8 @@ class ContainerTest extends TestCase
 
     public function test_get_method_for_interface_binding_which_unset(): void
     {   
-        // given container with entries and cotroller class
-        $this->payment = new class() implements PaymentGatewayInterface
-        {
-            public function charge(array $customer, float $amount, float $tax): bool
-            {
-                return true;
-            }
-        };
-
-        // when container->get(payment)->charge was called
-        $result = $this->container->get($this->payment::class)->charge(['piotr'], 25, 2);
+        $this->expectException(ContainerException::class);
+        $result = $this->container->get(PaymentGatewayInterface::class)->charge(['piotr'], 25, 2);
 
         // then we assert method will be executed
         $this->assertSame(true, $result);
