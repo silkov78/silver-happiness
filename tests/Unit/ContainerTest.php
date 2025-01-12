@@ -28,7 +28,7 @@ class ContainerTest extends TestCase
         };
     }
 
-    public function test_basic_usage_with_callable()
+    public function test_binding_by_set_method_with_callable()
     {   
         $anonClass = $this->anonClass;
 
@@ -42,20 +42,19 @@ class ContainerTest extends TestCase
         $this->assertSame('Hello!', $result);
     }
 
-    public function test_basic_usage_with_string_class_name()
+    public function test_binding_by_set_method_with_string_class_name()
     {   
         $anonClass = $this->anonClass;
 
         $this->container->set(
-            $anonClass::class,
-            $anonClass::class,
+            $anonClass::class, $anonClass::class,
         );
 
         $result = $this->container->get($anonClass::class)->process();
 
         $this->assertSame('Hello!', $result);
     }
-
+    
     public function test_has_method()
     {   
         $anonClass = $this->anonClass;
