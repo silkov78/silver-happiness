@@ -8,6 +8,8 @@ use App\Container;
 use PHPUnit\Framework\MockObject\MockClass;
 use PHPUnit\Framework\TestCase;
 
+interface AnonInterface {}
+
 class ContainerTest extends TestCase
 {   
     private Container $container;
@@ -17,7 +19,8 @@ class ContainerTest extends TestCase
     {
         $this->container = new Container();
 
-        $this->anonClass = new class() {
+        $this->anonClass = new class() implements AnonInterface
+        {
             public function process()
             {
                 return 'Hello!';
@@ -25,4 +28,34 @@ class ContainerTest extends TestCase
         };
     }
 
+    public function test_basic_usage_with_callable()
+    {   
+        $anonClass = $this->anonClass;
+
+        $this->container->set(
+            $anonClass::class,
+            fn(Container $c) => new $anonClass()
+        );
+
+        $result = $this->container->get($anonClass::class)->process();
+
+        $this->assertSame('Hello!', $result);
+    }
+
+    public function test_has_method()
+    {   
+        $anonClass = $this->anonClass;
+
+        $this->container->set(
+            $anonClass::class,
+            fn(Container $c) => new $anonClass()
+        );
+
+        $results = [
+            $this->container->has($anonClass::class),
+            $this->container->has('blablabla')
+        ];
+
+        $this->assertSame([true, false], $results);
+    }
 }
