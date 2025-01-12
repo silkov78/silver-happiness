@@ -42,6 +42,20 @@ class ContainerTest extends TestCase
         $this->assertSame('Hello!', $result);
     }
 
+    public function test_basic_usage_with_string_class_name()
+    {   
+        $anonClass = $this->anonClass;
+
+        $this->container->set(
+            $anonClass::class,
+            $anonClass::class,
+        );
+
+        $result = $this->container->get($anonClass::class)->process();
+
+        $this->assertSame('Hello!', $result);
+    }
+
     public function test_has_method()
     {   
         $anonClass = $this->anonClass;
