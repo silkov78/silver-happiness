@@ -10,11 +10,11 @@ use App\Exceptions\Container\ContainerException;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractExampleClass {}
+class WithoutConstructorClass {}
 
 class ContainerTest extends TestCase
 {   
     private Container $container;
-    private $anonClass;
 
     public function setUp(): void
     {
@@ -51,7 +51,16 @@ class ContainerTest extends TestCase
         $this->assertSame('I am anonClass!', $result);
     }
 
-    public function test_throw_container_exception_because_of_abstract_class(): void
+    public function test_autowiring_with_class_without_constructor(): void
+    {   
+        $expected = 'Tests\Unit\WithoutConstructorClass';
+        $withoutConstructorClass = $this->container->get(WithoutConstructorClass::class);
+        $result = $withoutConstructorClass::class;
+
+        $this->assertSame($expected, $result);
+    }
+
+    public function test_throw_container_exception_because_of_instantiable_class(): void
     {   
         $this->expectException(ContainerException::class);
         $this->container->get(AbstractExampleClass::class);
