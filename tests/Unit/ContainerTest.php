@@ -11,28 +11,11 @@ use App\Container;
 use App\Exceptions\Container\ContainerException;
 
 
-
-// Example Classes
-abstract class AbstractExampleClass {}
-
+// Examples
 class WithoutConstructorClass {}
 
 class WithEmptyConstructorClass {
     public function __construct() {}
-}
-
-class ConstructorWithoutTypeHintClass {
-    public function __construct(private $param) {}
-}
-
-class ConstructorWithBuiltinClass {
-    public function __construct(private string $param) {}
-}
-
-class ConstructorWithUnionTypeClass {
-    public function __construct(
-        private WithoutConstructorClass|WithEmptyConstructorClass $param
-    ) {}
 }
 
 
@@ -95,28 +78,12 @@ class ContainerTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function test_throw_container_exception_because_of_uninstantiable_class(): void
+    /**
+     * @dataProvider Tests\DataProviders\ContainerDataProvider::throwContainerExceptionCases
+     */
+    public function test_throw_container_exception($className): void
     {   
         $this->expectException(ContainerException::class);
-        $this->container->get(AbstractExampleClass::class);
+        $this->container->get($className);
     }
-
-    public function test_throw_container_exception_because_constructor_does_not_have_typehints(): void
-    {   
-        $this->expectException(ContainerException::class);
-        $this->container->get(ConstructorWithoutTypeHintClass::class);
-    }
-
-    public function test_throw_container_exception_because_constructor_has_builtin_type(): void
-    {   
-        $this->expectException(ContainerException::class);
-        $this->container->get(ConstructorWithBuiltinClass::class);
-    }
-
-    public function test_throw_container_exception_because_constructor_has_ReflectionUnionType(): void
-    {   
-        $this->expectException(ContainerException::class);
-        $this->container->get(ConstructorWithUnionTypeClass::class);
-    }
-    
 }
