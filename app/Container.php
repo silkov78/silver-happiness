@@ -73,7 +73,7 @@ class Container implements ContainerInterface
                     );
                 }
 
-                if ($type instanceof \ReflectionUnionType || $type instanceof \ReflectionIntersectionType ) {
+                if ($type instanceof \ReflectionUnionType) {
                     throw new ContainerException(
                         'Class "' . $id . '"has parameter"' . $name . '" without ReflectionUnionType type'
                     );

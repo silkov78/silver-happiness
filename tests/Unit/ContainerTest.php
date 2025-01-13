@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Container; 
-use App\Services\PaymentGatewayInterface;
-use App\Exceptions\Container\ContainerException;
 use PHPUnit\Framework\TestCase;
+
+use App\Container;
+
+use App\Exceptions\Container\ContainerException;
+
 
 
 // Example Classes
@@ -23,14 +25,15 @@ class ConstructorWithoutTypeHintClass {
     public function __construct(private $param) {}
 }
 
-class ConstructorWithReflectionUnionTypeClass {
-    public function __construct(private \ReflectionUnionType $param) {}
+class ConstructorWithBuiltinClass {
+    public function __construct(private string $param) {}
 }
 
-class ConstructorWithReflectionIntersectionTypeClass {
-    public function __construct(private \ReflectionUnionType $param) {}
+class ConstructorWithUnionTypeClass {
+    public function __construct(
+        private WithoutConstructorClass|WithEmptyConstructorClass $param
+    ) {}
 }
-
 
 
 class ContainerTest extends TestCase
@@ -104,16 +107,16 @@ class ContainerTest extends TestCase
         $this->container->get(ConstructorWithoutTypeHintClass::class);
     }
 
+    public function test_throw_container_exception_because_constructor_has_builtin_type(): void
+    {   
+        $this->expectException(ContainerException::class);
+        $this->container->get(ConstructorWithBuiltinClass::class);
+    }
+
     public function test_throw_container_exception_because_constructor_has_ReflectionUnionType(): void
     {   
         $this->expectException(ContainerException::class);
-        $this->container->get(ConstructorWithReflectionUnionTypeClass::class);
+        $this->container->get(ConstructorWithUnionTypeClass::class);
     }
-
-    public function test_throw_container_exception_because_constructor_has_ReflectionIntersectionType(): void
-    {   
-        $this->expectException(ContainerException::class);
-        $this->container->get(ConstructorWithReflectionIntersectionTypeClass::class);
-    }
-
+    
 }
