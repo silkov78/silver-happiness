@@ -9,11 +9,20 @@ use App\Services\PaymentGatewayInterface;
 use App\Exceptions\Container\ContainerException;
 use PHPUnit\Framework\TestCase;
 
+
+// Example Classes
 abstract class AbstractExampleClass {}
+
 class WithoutConstructorClass {}
+
 class WithEmptyConstructorClass {
     public function __construct() {}
 }
+
+class ConstructorWithoutTypeHintClass {
+    public function __construct(private $param) {}
+}
+
 
 class ContainerTest extends TestCase
 {   
@@ -74,10 +83,16 @@ class ContainerTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function test_throw_container_exception_because_of_instantiable_class(): void
+    public function test_throw_container_exception_because_of_uninstantiable_class(): void
     {   
         $this->expectException(ContainerException::class);
         $this->container->get(AbstractExampleClass::class);
+    }
+
+    public function test_throw_container_exception_because_constructor_does_not_have_typehints(): void
+    {   
+        $this->expectException(ContainerException::class);
+        $this->container->get(ConstructorWithoutTypeHintClass::class);
     }
 
 }
