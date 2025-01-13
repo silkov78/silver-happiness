@@ -11,6 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractExampleClass {}
 class WithoutConstructorClass {}
+class WithEmptyConstructorClass {
+    public function __construct() {}
+}
 
 class ContainerTest extends TestCase
 {   
@@ -53,8 +56,19 @@ class ContainerTest extends TestCase
 
     public function test_autowiring_with_class_without_constructor(): void
     {   
-        $expected = 'Tests\Unit\WithoutConstructorClass';
         $withoutConstructorClass = $this->container->get(WithoutConstructorClass::class);
+
+        $result = $withoutConstructorClass::class;
+        $expected = 'Tests\Unit\WithoutConstructorClass';
+
+        $this->assertSame($expected, $result);
+    }
+
+    public function test_autowiring_with_empty_constructor(): void
+    {   
+        $withoutConstructorClass = $this->container->get(WithEmptyConstructorClass::class);
+
+        $expected = 'Tests\Unit\WithEmptyConstructorClass';
         $result = $withoutConstructorClass::class;
 
         $this->assertSame($expected, $result);
