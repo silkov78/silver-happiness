@@ -51,31 +51,30 @@ class ContainerTest extends TestCase
      */
     public function test_binding_using_set_method($id, $concrete): void
     {   
-        $this->container->set($id, $concrete);
-
-        $result = $this->container->get($id)->anonClassInvitation();
-
-        $this->assertSame('I am anonClass!', $result);
+        $this->assertSame(
+            'I am anonClass!',
+            $this->container->get($id)->anonClassInvitation()
+        );
     }
 
     public function test_autowiring_with_class_without_constructor(): void
     {   
         $withoutConstructorClass = $this->container->get(WithoutConstructorClass::class);
 
-        $result = $withoutConstructorClass::class;
-        $expected = 'Tests\Unit\WithoutConstructorClass';
-
-        $this->assertSame($expected, $result);
+        $this->assertSame(
+            'Tests\Unit\WithoutConstructorClass',
+            $withoutConstructorClass::class
+        );
     }
 
     public function test_autowiring_with_empty_constructor(): void
     {   
         $withoutConstructorClass = $this->container->get(WithEmptyConstructorClass::class);
 
-        $expected = 'Tests\Unit\WithEmptyConstructorClass';
-        $result = $withoutConstructorClass::class;
-
-        $this->assertSame($expected, $result);
+        $this->assertSame(
+            'Tests\Unit\WithEmptyConstructorClass',
+            $withoutConstructorClass::class
+        );
     }
 
     /**
