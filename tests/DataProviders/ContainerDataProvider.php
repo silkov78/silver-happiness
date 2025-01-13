@@ -31,4 +31,15 @@ class ContainerDataProvider
             [AnonInterface::class, $anonClass::class]
         ];
     }
+
+//     public function throwContainerExceptionCases(): array
+//     {   
+//         $anonAbstractClass = new class() {};
+
+//         return [
+//             [$anonClass::class, fn(Container $c) => new $anonClass()],
+//             [$anonClass::class, $anonClass::class],
+//             [AnonInterface::class, $anonClass::class]
+//         ];
+//     }
 }

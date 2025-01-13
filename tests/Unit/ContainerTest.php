@@ -9,6 +9,8 @@ use App\Services\PaymentGatewayInterface;
 use App\Exceptions\Container\ContainerException;
 use PHPUnit\Framework\TestCase;
 
+abstract class AbstractExampleClass {}
+
 class ContainerTest extends TestCase
 {   
     private Container $container;
@@ -20,7 +22,7 @@ class ContainerTest extends TestCase
     }
 
 
-    public function test_has_method()
+    public function test_has_method(): void
     {   
         $anonClass = new class() {};
 
@@ -40,13 +42,19 @@ class ContainerTest extends TestCase
     /**
      * @dataProvider Tests\DataProviders\ContainerDataProvider::bindingBySetMethodCases
      */
-    public function test_binding_using_set_method($id, $concrete)
+    public function test_binding_using_set_method($id, $concrete): void
     {   
         $this->container->set($id, $concrete);
 
         $result = $this->container->get($id)->anonClassInvitation();
 
         $this->assertSame('I am anonClass!', $result);
+    }
+
+    public function test_throw_container_exception_because_of_abstract_class(): void
+    {   
+        $this->expectException(ContainerException::class);
+        $this->container->get(AbstractExampleClass::class);
     }
 
 }
