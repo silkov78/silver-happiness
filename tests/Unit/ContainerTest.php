@@ -23,6 +23,15 @@ class ConstructorWithoutTypeHintClass {
     public function __construct(private $param) {}
 }
 
+class ConstructorWithReflectionUnionTypeClass {
+    public function __construct(private \ReflectionUnionType $param) {}
+}
+
+class ConstructorWithReflectionIntersectionTypeClass {
+    public function __construct(private \ReflectionUnionType $param) {}
+}
+
+
 
 class ContainerTest extends TestCase
 {   
@@ -93,6 +102,18 @@ class ContainerTest extends TestCase
     {   
         $this->expectException(ContainerException::class);
         $this->container->get(ConstructorWithoutTypeHintClass::class);
+    }
+
+    public function test_throw_container_exception_because_constructor_has_ReflectionUnionType(): void
+    {   
+        $this->expectException(ContainerException::class);
+        $this->container->get(ConstructorWithReflectionUnionTypeClass::class);
+    }
+
+    public function test_throw_container_exception_because_constructor_has_ReflectionIntersectionType(): void
+    {   
+        $this->expectException(ContainerException::class);
+        $this->container->get(ConstructorWithReflectionIntersectionTypeClass::class);
     }
 
 }
