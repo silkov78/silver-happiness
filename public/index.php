@@ -7,7 +7,7 @@ use App\Config;
 use App\Container;
 use App\Controllers\HomeController;
 use App\Controllers\TransactionsController;
-use App\Controllers\UploadController;
+use App\Controllers\GeneratorExampleController;
 use App\Router;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -25,7 +25,8 @@ $router
     ->get('/', [HomeController::class, 'index'])
     ->get('/transactions', [TransactionsController::class, 'getTransactions'])
     ->get('/transactions/upload', [TransactionsController::class, 'getForm'])
-    ->post('/transactions/upload', [TransactionsController::class, 'uploadTransactions']);
+    ->post('/transactions/upload', [TransactionsController::class, 'uploadTransactions'])
+    ->get('/examples/generators', [GeneratorExampleController::class, 'index']);
 
 (new App(
     $container,
