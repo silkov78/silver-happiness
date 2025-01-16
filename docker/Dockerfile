@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 # COPY ./project/php.ini /usr/local/etc/php/php.ini
