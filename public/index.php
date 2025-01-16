@@ -29,6 +29,9 @@ $router->registerRoutersFromControllerAttribute(
     ]
 );
 
+echo '<pre>';
+print_r($router->routes());
+echo '</pre>';
 // $router
 //     ->get('/', [HomeController::class, 'index'])
 //     ->get('/transactions', [TransactionsController::class, 'getTransactions'])

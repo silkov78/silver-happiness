@@ -5,12 +5,14 @@ declare(strict_types = 1);
 namespace App\Controllers;
 
 use App\View;
+use App\Attributes\Route;
 
 class GeneratorExampleController
 {
     public function __construct() {    
     }
 
+    #[Route('/examples/generators')]
     public function index()
     {   
         $numbers = $this->lazyRange(1, 10);
