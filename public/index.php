@@ -21,12 +21,20 @@ define('VIEW_PATH', __DIR__ . '/../views');
 $container = new Container();
 $router = new Router($container);
 
-$router
-    ->get('/', [HomeController::class, 'index'])
-    ->get('/transactions', [TransactionsController::class, 'getTransactions'])
-    ->get('/transactions/upload', [TransactionsController::class, 'getForm'])
-    ->post('/transactions/upload', [TransactionsController::class, 'uploadTransactions'])
-    ->get('/examples/generators', [GeneratorExampleController::class, 'index']);
+$router->registerRoutersFromControllerAttribute(
+    [
+        HomeController::class,
+        TransactionsController::class,
+        GeneratorExampleController::class
+    ]
+);
+
+// $router
+//     ->get('/', [HomeController::class, 'index'])
+//     ->get('/transactions', [TransactionsController::class, 'getTransactions'])
+//     ->get('/transactions/upload', [TransactionsController::class, 'getForm'])
+//     ->post('/transactions/upload', [TransactionsController::class, 'uploadTransactions'])
+//     ->get('/examples/generators', [GeneratorExampleController::class, 'index']);
 
 (new App(
     $container,
