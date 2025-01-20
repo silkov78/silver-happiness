@@ -16,7 +16,7 @@ class HomeController
     {    
     }
 
-    #[Get('/')]
+    #[Get(path: '/')]
     public function index(): View
     {   
         $this->invoiceService->process(['nikita'], 25);

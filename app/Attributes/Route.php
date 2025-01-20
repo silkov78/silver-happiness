@@ -7,7 +7,7 @@ namespace App\Attributes;
 use Attribute;
 use App\Contracts\RouteInterface;
 
-#[Attribute]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Route implements RouteInterface
 {
     public function __construct(
