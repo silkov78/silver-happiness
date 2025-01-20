@@ -32,12 +32,6 @@ $router->registerRoutersFromControllerAttribute(
 echo '<pre>';
 print_r($router->routes());
 echo '</pre>';
-// $router
-//     ->get('/', [HomeController::class, 'index'])
-//     ->get('/transactions', [TransactionsController::class, 'getTransactions'])
-//     ->get('/transactions/upload', [TransactionsController::class, 'getForm'])
-//     ->post('/transactions/upload', [TransactionsController::class, 'uploadTransactions'])
-//     ->get('/examples/generators', [GeneratorExampleController::class, 'index']);
 
 (new App(
     $container,

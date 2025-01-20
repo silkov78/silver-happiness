@@ -22,4 +22,17 @@ class HomeController
         $this->invoiceService->process(['nikita'], 25);
         return View::make('index');
     }
+
+    #[Route('/', 'post')]
+    public function store()
+    {   
+
+    }
+
+    #[Route('/', 'put')]
+    public function update()
+    {   
+
+    }
+
 }
