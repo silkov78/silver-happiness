@@ -12,7 +12,8 @@
         "slim/psr7": "^1.5",
         "slim/twig-view": "^3.3",
         "php-di/php-di": "^6.4",
-        "symfony/console": "*"
+        "symfony/console": "*",
+        "symfony/mailer": "^6.4"
     },
     "autoload": {
         "psr-4": {
