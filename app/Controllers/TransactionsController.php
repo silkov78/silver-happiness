@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\Route;
+use App\Attributes\Get;
+use App\Attributes\Put;
+use App\Attributes\Post;
 use App\View;
 use App\Tools\CsvFilesHandler;
 use App\Models\Transaction;
 
 class TransactionsController
 {
-    #[Route('/transactions')]
+    #[Get('/transactions')]
     public function getForm(): View
     {
         return View::make('transactions/form');
     }
 
-    #[Route('/transactions/upload')]
+    #[Get('/transactions/upload')]
     public function getTransactions()
     {
         $transactionsList = (new Transaction())->fetchAll();
@@ -28,7 +30,7 @@ class TransactionsController
         );
     }
 
-    #[Route('/transactions/upload', 'post')]
+    #[Post('/transactions/upload')]
     public function uploadTransactions(): View
     {
         $csvHandler = new CsvFilesHandler($_FILES['csv_files']);

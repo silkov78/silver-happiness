@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace App\Controllers;
 
 use App\View;
-use App\Container;
 use App\Services\InvoiceService;
-
-use App\Attributes\Route;
+use App\Attributes\Get;
+use App\Attributes\Put;
+use App\Attributes\Post;
 
 class HomeController
 {
@@ -16,20 +16,20 @@ class HomeController
     {    
     }
 
-    #[Route('/')]
+    #[Get('/')]
     public function index(): View
     {   
         $this->invoiceService->process(['nikita'], 25);
         return View::make('index');
     }
 
-    #[Route('/', 'post')]
+    #[Post('/')]
     public function store()
     {   
 
     }
 
-    #[Route('/', 'put')]
+    #[Put('/')]
     public function update()
     {   
 
