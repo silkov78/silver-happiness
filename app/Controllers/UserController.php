@@ -20,11 +20,13 @@ class UserController
     }
 
     #[Post('/users')]
-    public function register(): View
+    public function register()
     {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $firstName = explode(' ', $name);
+
+        var_dump($name, $email);
 
         $text = <<<Body
 Hello $firstName,
@@ -39,7 +41,7 @@ Body;
                  ->subject('Welcome!')
                  ->text($text);
 
-        $dsn = 'smtp://user:pass@smtp.example.com:port';
+        $dsn = 'smtp://mailhog:1025';
 
         $transport = Transport::fromDsn($dsn);
 

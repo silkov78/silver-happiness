@@ -8,6 +8,7 @@ use App\Container;
 use App\Controllers\HomeController;
 use App\Controllers\TransactionsController;
 use App\Controllers\GeneratorExampleController;
+use App\Controllers\UserController;
 use App\Router;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -25,13 +26,14 @@ $router->registerRoutersFromControllerAttribute(
     [
         HomeController::class,
         TransactionsController::class,
-        GeneratorExampleController::class
+        GeneratorExampleController::class,
+        UserController::class
     ]
 );
 
-echo '<pre>';
-print_r($router->routes());
-echo '</pre>';
+// echo '<pre>';
+// print_r($router->routes());
+// echo '</pre>';
 
 (new App(
     $container,
